@@ -29,7 +29,7 @@ def call(Map config = [:]) {
 
             stage('Terraform Apply') {
                 when {
-                    expression { return config.get('autoApprove', false) }
+                    expression { return config.get('autoApprove', true) }
                 }
                 steps {
                     withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
