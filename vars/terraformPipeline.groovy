@@ -35,7 +35,7 @@ def call(Map config = [:]) {
                     withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
                         sh '''
                           echo ">>> Applying Terraform Changes"
-                          export KUBECONFIG=$KUBECONFIG
+                          export TF_VAR_KUBECONFIG=$KUBECONFIG
                           echo ">>> Applying Terraform Changes"
                           terraform apply -auto-approve tfplan
                         '''
