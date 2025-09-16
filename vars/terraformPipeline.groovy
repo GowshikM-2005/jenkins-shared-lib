@@ -29,9 +29,7 @@ def call(Map config = [:]) {
                 //     expression { return config.get('autoApprove', true) }
                 // }
                 steps {
-                    withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
-                        sh 'terraform apply -auto-approve tfplan'
-                    }
+                    sh 'terraform apply -auto-approve tfplan'
                 }
             }
         }
