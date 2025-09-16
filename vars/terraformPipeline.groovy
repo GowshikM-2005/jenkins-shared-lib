@@ -30,7 +30,7 @@ def call(Map config = [:]) {
                 }
                 steps {
                     withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
-                        sh 'terraform apply -auto-approve'
+                        sh 'terraform apply -tfplan'
                     }
                 }
             }
