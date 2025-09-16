@@ -30,23 +30,23 @@ def call(Map config = [:]) {
                 }
             }
 
-            stage('Terraform Apply') {
-                when {
-                    expression { return config.get('autoApprove', true) }
-                }
-                steps {
-                    withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
-                        sh '''
-                          # Export kubeconfig path again to ensure it's available
-                          export TF_VAR_kubeconfig_path=$KUBECONFIG
+        //     stage('Terraform Apply') {
+        //         when {
+        //             expression { return config.get('autoApprove', true) }
+        //         }
+        //         steps {
+        //             withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
+        //                 sh '''
+        //                   # Export kubeconfig path again to ensure it's available
+        //                   export TF_VAR_kubeconfig_path=$KUBECONFIG
 
-                          echo ">>> Applying Terraform Changes"
-                          terraform apply -auto-approve tfplan
-                        '''
-                    }
-                }
-            }
-        }
+        //                   echo ">>> Applying Terraform Changes"
+        //                   terraform apply -auto-approve tfplan
+        //                 '''
+        //             }
+        //         }
+        //     }
+        // }
 
         post {
             success {
