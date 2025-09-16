@@ -8,16 +8,16 @@ def call(Map config = [:]){
                         url: config.get('gitRepo', 'https://github.com/GowshikM-2005/jenkins-shared-lib.git')
                 }
             }
-         stage('Terraform Setup'){
-            steps {
-                sh """
-                      curl -fsSL https://releases.hashicorp.com/terraform/\${TF_VERSION}/terraform_\${TF_VERSION}_linux_amd64.zip -o terraform.zip
-                      unzip terraform.zip
-                      sudo mv terraform /usr/local/bin/
-                      terraform --version
-                    """
-            }
-         }
+         // stage('Terraform Setup'){
+         //    steps {
+         //        sh """
+         //              curl -fsSL https://releases.hashicorp.com/terraform/\${TF_VERSION}/terraform_\${TF_VERSION}_linux_amd64.zip -o terraform.zip
+         //              unzip terraform.zip
+         //              sudo mv terraform /usr/local/bin/
+         //              terraform --version
+         //            """
+         //    }
+         // }
         stage('Terraform Init'){
             steps {
                 sh 'terraform init'
