@@ -5,7 +5,7 @@ def call(Map config = [:]){
                stage('Checkout Code') {
                 steps {
                     git branch: config.get('gitBranch', 'main'),
-                        url: config.get('gitRepo', 'https://github.com/your-org/terraform-infra.git')
+                        url: config.get('gitRepo', 'https://github.com/GowshikM-2005/Terraform.git')
                 }
             }
          stage('Terraform Setup'){
