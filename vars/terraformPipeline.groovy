@@ -9,29 +9,19 @@ def call(Map config = [:]) {
                         url: config.get('gitRepo', 'https://github.com/GowshikM-2005/jenkins-shared-lib.git')
                 }
             }
-
-            stage('Terraform Init') {
-                steps {
+            stage('Terraform Init & Plan & Apply') {
+            steps {
                     withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
-                        sh 'terraform init'
-                    }
-                }
-            }
+                        sh '''
+                          terraform init
+                          terraform plan -out=tfplan
+                          terraform apply -auto-approve tfplan
+                        '''
+              } 
+          }
+       }
 
-            stage('Terraform Plan') {
-                steps {
-                    sh 'terraform plan -out=tfplan'
-                }
-            }
-
-            stage('Terraform Apply') {
-                // when {
-                //     expression { return config.get('autoApprove', true) }
-                // }
-                steps {
-                    sh 'terraform apply -auto-approve tfplan'
-                }
-            }
+            
         }
     }
 }
