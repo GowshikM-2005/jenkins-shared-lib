@@ -14,6 +14,9 @@ def call(Map config = [:]) {
                 steps {
                     withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
                         sh '''
+                          # Export kubeconfig path for Terraform variable
+                          export TF_VAR_kubeconfig_path=$KUBECONFIG
+
                           echo ">>> Initializing Terraform"
                           terraform init -input=false
 
@@ -34,8 +37,9 @@ def call(Map config = [:]) {
                 steps {
                     withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
                         sh '''
-                          echo ">>> Applying Terraform Changes"
-                          export TF_VAR_KUBECONFIG=$KUBECONFIG
+                          # Export kubeconfig path again to ensure it's available
+                          export TF_VAR_kubeconfig_path=$KUBECONFIG
+
                           echo ">>> Applying Terraform Changes"
                           terraform apply -auto-approve tfplan
                         '''
