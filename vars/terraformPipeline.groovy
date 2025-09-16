@@ -20,7 +20,9 @@ def call(Map config = [:]){
          // }
         stage('Terraform Init'){
             steps {
+                 withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
                 sh 'terraform init'
+                 }       
             }
         }
         stage('Terraform Plan'){
