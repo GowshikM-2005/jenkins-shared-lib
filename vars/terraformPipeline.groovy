@@ -61,7 +61,11 @@
 
 def call(Map config = [:]) {
     pipeline {
-        agent any 
+        agent any
+
+        environment {
+            TF_VAR_kubeconfig_path = "${WORKSPACE}/.kube/config"
+        }
 
         stages {
             stage('Checkout Code') {
@@ -77,12 +81,8 @@ def call(Map config = [:]) {
                         sh '''
                           echo ">>> Setting up kubeconfig"
                           mkdir -p $WORKSPACE/.kube
-                          cp $KUBECONFIG_FILE $WORKSPACE/.kube/config
-                          export KUBECONFIG=$WORKSPACE/.kube/config
-                          echo "KUBECONFIG set to $KUBECONFIG"
-
-                          # Pass kubeconfig path to Terraform variable
-                          export TF_VAR_kubeconfig_path=$KUBECONFIG
+                          cp $KUBECONFIG_FILE $TF_VAR_kubeconfig_path
+                          echo "KUBECONFIG set to $TF_VAR_kubeconfig_path"
                         '''
                     }
                 }
@@ -117,20 +117,21 @@ def call(Map config = [:]) {
         }
 
         post {
-            success {
-                echo "✅ Terraform pipeline completed successfully"
-            }
-            failure {
-                echo "❌ Terraform pipeline failed"
-            }
             always {
                 sh '''
                   echo ">>> Cleaning up kubeconfig"
                   rm -rf $WORKSPACE/.kube
                 '''
             }
+            success {
+                echo "✅ Terraform pipeline completed successfully"
+            }
+            failure {
+                echo "❌ Terraform pipeline failed"
+            }
         }
     }
 }
+
 
 
